@@ -14,28 +14,40 @@ with open(filename, 'r') as file:
     #ARE = TGACxxxGC
     #regex to find this ARE: TGAC\w\w\wGC
     ARE_regex = (r'TGAC\w\w\wGC')
+    #Reverse ARE = CGxxxGTCA
+    #regex to find reverse ARE: CG\w\w\wGTCA
+    #regex to find the chromosome number and where the gene(or ECR) is on the chromosome.
+    genome_position_regex = (r'CHR\d+:\d+')
+    #Ask user for base genome species.
+    species_identification = input('What species is your base genome?')
+    #Make a regex based on the user's input.
+    species_regex = (species_identification)
     #Instantiate an empty list to be used for storing the found AREs.
     listicle = []
     #For each token from the txt file, find AREs and store them in listicle.  Each token will have its own list stored in listicle.
     for token in tokenized_string:
-        #print(re.findall(ARE_regex, token))
-        listicle.append(re.findall(ARE_regex, token))
-    print(listicle)
+        #Get the species and genome position for each token. 
+        genome_position = re.finditer(genome_position_regex, token)
+        genome_species = re.finditer(species_regex, token, flags = re.IGNORECASE)
+        #Split the genome position so we can use the chromosome number and base positions separately.
+        for position in genome_position:
+            genome_position_split = re.split(r':', position.group())
+        #Make the species found in the token useable for printing later.
+        for species in genome_species:
+            use_species = species.group()
+            use_species = use_species.lower()
 
-    #Iterate through the lists made for each token. 
-    for item in listicle:
-        #If the list for a specific token is empty, continue on.
-        if not item:
-            continue
-        #If a token contains one or more AREs, print each ARE.
-        for ARE in item:
-            print(ARE)
-            #find the ARE so I can see its location.  This eventually will help me locate its position in the genome.
-            for token in tokenized_string:
-                if re.search(ARE,token) is not None:
-                    print(re.search(ARE,token))
-    #Reverse ARE = CGxxxGTCA
-    #regex to find reverse ARE: CG\w\w\wGTCA
+        #Find the AREs in a token.
+        all_AREs = re.finditer(ARE_regex, token)
+        #For each ARE, print the ARE sequence and position within the genome.
+        for ARE in all_AREs:
+            #ARE.start() returns the position within the token.
+            ARE_in_string = ARE.start()
+            #This allows us to determine where the ARE is in the gene.
+            ARE_in_genome = int(ARE.start()) + int(genome_position_split[1])
+            print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
+
+
 
 
 
