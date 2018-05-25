@@ -13,9 +13,11 @@ with open(filename, 'r') as file:
 
     #ARE = TGACxxxGC
     #regex to find this ARE: TGAC\w\w\wGC
-    ARE_regex = (r'TGAC\w\w\wGC')
     #Reverse ARE = CGxxxGTCA
     #regex to find reverse ARE: CG\w\w\wGTCA
+    ARE_regex = (r'TGAC\w\w\wGC|CG\w\w\wGTCA')
+
+
     #regex to find the chromosome number and where the gene(or ECR) is on the chromosome.
     genome_position_regex = (r'CHR\d+:\d+')
     #Ask user for base genome species.
