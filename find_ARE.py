@@ -24,6 +24,7 @@ with open(filename, 'r') as file:
     species_identification = input('What species is your base genome?')
     #Make a regex based on the user's input.
     species_regex = (species_identification)
+    ECR_identifier = '> ECR'
     #Instantiate an empty list to be used for storing the found AREs.
     listicle = []
     #For each token from the txt file, find AREs and store them in listicle.  Each token will have its own list stored in listicle.
@@ -50,6 +51,9 @@ with open(filename, 'r') as file:
             all_AREs = re.finditer(ARE_regex, split_tokens[1])
             #For each ARE, print the ARE sequence and position within the genome.
             for ARE in all_AREs:
+                #Determine if the ARE is in an evolutionarily conserved region.
+                if ECR_identifier in split_tokens[0]:
+                    print('The following ARE is in an evolutionarily conserved region.')
                 #ARE.start() returns the position within the token.
                 ARE_in_string = ARE.start()
                 #This allows us to determine where the ARE is in the gene.
