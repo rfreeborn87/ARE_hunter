@@ -27,6 +27,7 @@ with open(filename, 'r') as file:
     #For each token from the txt file, find AREs and store them in listicle.  Each token will have its own list stored in listicle.
     for token in tokenized_string:
         #Get the species and genome position for each token. 
+        #print(token)
         genome_position = re.finditer(genome_position_regex, token)
         genome_species = re.finditer(species_regex, token, flags = re.IGNORECASE)
         #Split the genome position so we can use the chromosome number and base positions separately.
@@ -36,16 +37,22 @@ with open(filename, 'r') as file:
         for species in genome_species:
             use_species = species.group()
             use_species = use_species.lower()
+        #Split the token so we can calculate the ARE position in the string without including the header.
+        new_tokens = re.sub('\n', '', token)
+        split_tokens = re.split(r'\-\d+', new_tokens)
 
         #Find the AREs in a token.
-        all_AREs = re.finditer(ARE_regex, token)
-        #For each ARE, print the ARE sequence and position within the genome.
-        for ARE in all_AREs:
-            #ARE.start() returns the position within the token.
-            ARE_in_string = ARE.start()
-            #This allows us to determine where the ARE is in the gene.
-            ARE_in_genome = int(ARE.start()) + int(genome_position_split[1])
-            print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
+        for split_token in split_tokens:
+            if split_token == split_tokens[0]:
+                continue
+            all_AREs = re.finditer(ARE_regex, split_tokens[1])
+            #For each ARE, print the ARE sequence and position within the genome.
+            for ARE in all_AREs:
+                #ARE.start() returns the position within the token.
+                ARE_in_string = ARE.start()
+                #This allows us to determine where the ARE is in the gene.
+                ARE_in_genome = int(ARE.start()) + int(genome_position_split[1])
+                print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
 
 
 
