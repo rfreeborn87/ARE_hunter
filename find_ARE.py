@@ -3,9 +3,11 @@ import re
 from nltk.tokenize import regexp_tokenize
 filename = input('Please enter the name of your file, including the path and extension (i.e. C:/Desktop/Rockwell_Lab/ARE_file.txt): \n')
 
-with open(filename, 'r') as file:
+with open(filename, 'a+') as file:
+    file.seek(0)
     #Read the file.
     text = file.read()
+    #print(text)
     #Change all letters to upper case.
     cased_text = text.upper()
     #Tokenize the txt file.  The first token will be the entire gene, and each subsequent token will be an evolutionarily conserved region.
@@ -53,12 +55,14 @@ with open(filename, 'r') as file:
             for ARE in all_AREs:
                 #Determine if the ARE is in an evolutionarily conserved region.
                 if ECR_identifier in split_tokens[0]:
-                    print('The following ARE is in an evolutionarily conserved region.')
+                    #print('The following ARE is in an evolutionarily conserved region.')
+                    file.write('\nThe following ARE is in an evolutionarily conserved region.')
                 #ARE.start() returns the position within the token.
                 ARE_in_string = ARE.start()
                 #This allows us to determine where the ARE is in the gene.
                 ARE_in_genome = int(ARE.start()) + int(genome_position_split[1])
-                print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
+                #print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
+                file.write('\nARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
 
 
 
