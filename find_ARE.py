@@ -1,6 +1,7 @@
 #This is the start of my file for ARE hunting.
 import re
 from nltk.tokenize import regexp_tokenize
+import os
 filename = input('Please enter the name of your file, including the path and extension (i.e. C:/Desktop/Rockwell_Lab/ARE_file.txt): \n')
 
 with open(filename, 'a+') as file:
@@ -66,6 +67,7 @@ with open(filename, 'a+') as file:
 
 
 
+os.startfile(filename)
 
 
 
