@@ -1,7 +1,7 @@
 #This is the start of my file for ARE hunting.
 import re
 from nltk.tokenize import regexp_tokenize
-filename = 'E:/OneDrive/Research/Rockwell_Lab/Python/ARE_hunter/hNQO1_from_ECR.txt'
+filename = input('Please enter the name of your file, including the path and extension (i.e. C:/Desktop/Rockwell_Lab/ARE_file.txt): \n')
 
 with open(filename, 'r') as file:
     #Read the file.
