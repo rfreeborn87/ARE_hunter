@@ -18,7 +18,7 @@ with open(filename, 'a+') as file:
     #regex to find this ARE: TGAC\w\w\wGC
     #Reverse ARE = CGxxxGTCA
     #regex to find reverse ARE: CG\w\w\wGTCA
-    ARE_regex = (r'TGAC\w\w\wGC|CG\w\w\wGTCA')
+    ARE_regex = (r'TGAC\w\w\wGC|GC\w\w\wGTCA')
 
 
     #regex to find the chromosome number and where the gene(or ECR) is on the chromosome.
@@ -62,8 +62,10 @@ with open(filename, 'a+') as file:
                 ARE_in_string = ARE.start()
                 #This allows us to determine where the ARE is in the gene.
                 ARE_in_genome = int(ARE.start()) + int(genome_position_split[1])
+                ARE_in_gene = int(ARE.start())
                 #print('ARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
-                file.write('\nARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome))
+                file.write('\nARE sequence: [' + ARE.group() + '] \n   ARE Location in ' + str(use_species) + ' genome -- ' + str(genome_position_split[0]) + ': ' + str(ARE_in_genome) + '\n')
+                file.write('     ARE start site within the gene: ' + str(ARE_in_gene))
 
 
 
